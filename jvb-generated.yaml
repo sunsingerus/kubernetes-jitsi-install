@@ -1,0 +1,122 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jvb-tcp
+  labels:
+    app: jvb
+spec:
+  selector:
+    app: jvb
+  ports:
+  - name: "port-4443"
+    port: 4443
+    targetPort: 4443
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jvb-udp
+  labels:
+    app: jvb
+spec:
+  selector:
+    app: jvb
+  ports:
+  - name: "port-10000"
+    port: 10000
+    protocol: UDP
+    targetPort: 10000
+  type: LoadBalancer
+#---
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: jvb-tcp
+#  labels:
+#    app: jvb
+#spec:
+#  selector:
+#    app: jvb
+#  ports:
+#  - name: "port-10000"
+#    port: 10000
+#    protocol: UDP
+#    targetPort: 10000
+#  - name: "port-4443"
+#    port: 4443
+#    targetPort: 4443
+#  type: LoadBalancer
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jvb-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jvb
+  labels:
+    app: jvb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jvb
+  template:
+    metadata:
+      labels:
+        app: jvb
+    spec:
+      volumes:
+      - name: jvb-config
+        persistentVolumeClaim:
+          claimName: jvb-pvc
+      containers:
+      - name: jvb
+        image: jitsi/jvb
+        volumeMounts:
+        - mountPath: /config
+          name: jvb-config
+        env:
+        - name: DOCKER_HOST_ADDRESS
+          value: ""
+        - name: XMPP_AUTH_DOMAIN
+          value: "auth.meet.jitsi"
+        - name: XMPP_INTERNAL_MUC_DOMAIN
+          value: "internal-muc.meet.jitsi"
+        - name: XMPP_SERVER
+          value: "xmpp.meet.jitsi"
+        - name: JVB_AUTH_USER
+          value: "jvb"
+        - name: JVB_AUTH_PASSWORD
+          value: "passw0rd"
+        - name: JVB_BREWERY_MUC
+          value: "jvbbrewery"
+        - name: JVB_PORT
+          value: "10000"
+        - name: JVB_TCP_HARVESTER_DISABLED
+          value: "true"
+        - name: JVB_TCP_PORT
+          value: "4443"
+        - name: JVB_STUN_SERVERS
+          value: "stun.l.google.com:19302,stun1.l.google.com:19302,stun2.l.google.com:19302"
+        - name: JVB_ENABLE_APIS
+          value: ""
+        - name: JICOFO_AUTH_USER
+          value: "focus"
+        - name: TZ
+          value: "Europe/Amsterdam"
+        ports:
+        - containerPort: 10000
+          protocol: UDP
+        - containerPort: 4443
+

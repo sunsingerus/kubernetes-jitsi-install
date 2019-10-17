@@ -1,0 +1,127 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+  labels:
+    app: web
+spec:
+  selector:
+    app: web
+  ports:
+  - name: "port-8000"
+    port: 8000
+    targetPort: 80
+  - name: "port-8443"
+    port: 8443
+    targetPort: 443
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: web-config-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: web-letsencrypt-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: web-transcripts-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: web
+  name: web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      volumes:
+      - name: web-config
+        persistentVolumeClaim:
+          claimName: web-config-pvc
+      - name: web-letsencrypt
+        persistentVolumeClaim:
+          claimName: web-letsencrypt-pvc
+      - name: web-transcripts
+        persistentVolumeClaim:
+          claimName: web-transcripts-pvc
+      containers:
+      - name: web
+        image: jitsi/web
+        volumeMounts:
+        - mountPath: /config
+          name: web-config
+        - mountPath: /etc/letsencrypt
+          name: web-letsencrypt
+        - mountPath: /usr/share/jitsi-meet/transcripts
+          name: web-transcripts
+        env:
+        - name: ENABLE_AUTH
+          value: ""
+        - name: ENABLE_GUESTS
+          value: ""
+        - name: ENABLE_LETSENCRYPT
+          value: ""
+        - name: ENABLE_HTTP_REDIRECT
+          value: ""
+        - name: ENABLE_TRANSCRIPTIONS
+          value: ""
+        - name: DISABLE_HTTPS
+          value: ""
+        - name: JICOFO_AUTH_USER
+          value: "focus"
+        - name: LETSENCRYPT_DOMAIN
+          value: ""
+        - name: LETSENCRYPT_EMAIL
+          value: ""
+        - name: PUBLIC_URL
+          value: ""
+        - name: XMPP_DOMAIN
+          value: "meet.jitsi"
+        - name: XMPP_AUTH_DOMAIN
+          value: "auth.meet.jitsi"
+        - name: XMPP_BOSH_URL_BASE
+          value: "http://xmpp.meet.jitsi:5280"
+        - name: XMPP_GUEST_DOMAIN
+          value: "guest.meet.jitsi"
+        - name: XMPP_MUC_DOMAIN
+          value: "muc.meet.jitsi"
+        - name: ETHERPAD_URL_BASE
+          value: ""
+        - name: TZ
+          value: "Europe/Amsterdam"
+        ports:
+        - containerPort: 80
+        - containerPort: 443
+

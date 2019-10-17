@@ -1,0 +1,76 @@
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: jicofo
+#spec:
+#  selector:
+#    app: jicofo
+#  ports:
+#    - port: 8888
+#      targetPort: 8888
+#      name: "port-8888"
+#  type: LoadBalancer
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jicofo-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jicofo
+  labels:
+    app: jicofo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jicofo
+  template:
+    metadata:
+      labels:
+        app: jicofo
+    spec:
+      volumes:
+      - name: jicofo-config
+        persistentVolumeClaim:
+          claimName: jicofo-pvc
+      containers:
+      - name: jicofo
+        image: jitsi/jicofo
+        volumeMounts:
+        - mountPath: /config
+          name: jicofo-config
+        env:
+        - name: ENABLE_AUTH
+          value: "$ENABLE_AUTH"
+        - name: XMPP_DOMAIN
+          value: "$XMPP_DOMAIN"
+        - name: XMPP_AUTH_DOMAIN
+          value: "$XMPP_AUTH_DOMAIN"
+        - name: XMPP_INTERNAL_MUC_DOMAIN
+          value: "$XMPP_INTERNAL_MUC_DOMAIN"
+        - name: XMPP_SERVER
+          value: "$XMPP_SERVER"
+        - name: JICOFO_COMPONENT_SECRET
+          value: "$JICOFO_COMPONENT_SECRET"
+        - name: JICOFO_AUTH_USER
+          value: "$JICOFO_AUTH_USER"
+        - name: JICOFO_AUTH_PASSWORD
+          value: "$JICOFO_AUTH_PASSWORD"
+        - name: JVB_BREWERY_MUC
+          value: "$JVB_BREWERY_MUC"
+        - name: JIGASI_BREWERY_MUC
+          value: "$JIGASI_BREWERY_MUC"
+        - name: TZ
+          value: "$TZ"
+#        ports:
+#        - containerPort: 8888
+

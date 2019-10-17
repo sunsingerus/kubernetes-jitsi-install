@@ -1,0 +1,127 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+  labels:
+    app: web
+spec:
+  selector:
+    app: web
+  ports:
+  - name: "port-$HTTP_PORT"
+    port: $HTTP_PORT
+    targetPort: 80
+  - name: "port-$HTTPS_PORT"
+    port: $HTTPS_PORT
+    targetPort: 443
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: web-config-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: web-letsencrypt-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: web-transcripts-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: web
+  name: web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      volumes:
+      - name: web-config
+        persistentVolumeClaim:
+          claimName: web-config-pvc
+      - name: web-letsencrypt
+        persistentVolumeClaim:
+          claimName: web-letsencrypt-pvc
+      - name: web-transcripts
+        persistentVolumeClaim:
+          claimName: web-transcripts-pvc
+      containers:
+      - name: web
+        image: jitsi/web
+        volumeMounts:
+        - mountPath: /config
+          name: web-config
+        - mountPath: /etc/letsencrypt
+          name: web-letsencrypt
+        - mountPath: /usr/share/jitsi-meet/transcripts
+          name: web-transcripts
+        env:
+        - name: ENABLE_AUTH
+          value: "$ENABLE_AUTH"
+        - name: ENABLE_GUESTS
+          value: "$ENABLE_GUESTS"
+        - name: ENABLE_LETSENCRYPT
+          value: "$ENABLE_LETSENCRYPT"
+        - name: ENABLE_HTTP_REDIRECT
+          value: "$ENABLE_HTTP_REDIRECT"
+        - name: ENABLE_TRANSCRIPTIONS
+          value: "$ENABLE_TRANSCRIPTIONS"
+        - name: DISABLE_HTTPS
+          value: "$DISABLE_HTTPS"
+        - name: JICOFO_AUTH_USER
+          value: "$JICOFO_AUTH_USER"
+        - name: LETSENCRYPT_DOMAIN
+          value: "$LETSENCRYPT_DOMAIN"
+        - name: LETSENCRYPT_EMAIL
+          value: "$LETSENCRYPT_EMAIL"
+        - name: PUBLIC_URL
+          value: "$PUBLIC_URL"
+        - name: XMPP_DOMAIN
+          value: "$XMPP_DOMAIN"
+        - name: XMPP_AUTH_DOMAIN
+          value: "$XMPP_AUTH_DOMAIN"
+        - name: XMPP_BOSH_URL_BASE
+          value: "$XMPP_BOSH_URL_BASE"
+        - name: XMPP_GUEST_DOMAIN
+          value: "$XMPP_GUEST_DOMAIN"
+        - name: XMPP_MUC_DOMAIN
+          value: "$XMPP_MUC_DOMAIN"
+        - name: ETHERPAD_URL_BASE
+          value: "$ETHERPAD_URL_BASE"
+        - name: TZ
+          value: "$TZ"
+        ports:
+        - containerPort: 80
+        - containerPort: 443
+

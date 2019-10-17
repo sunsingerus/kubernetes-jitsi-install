@@ -1,0 +1,151 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prosody
+spec:
+  selector:
+    app: prosody
+  ports:
+    - port: 5222
+      targetPort: 5222
+      name: "port-5222"
+#    - port: 5269
+#      targetPort: 5269
+#      name: "port-5269"
+    - port: 5280
+      targetPort: 5280
+      name: "port-5280"
+    - port: 5347
+      targetPort: 5347
+      name: "port-5347"
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: prosody-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prosody
+  labels:
+    app: prosody
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prosody
+  template:
+    metadata:
+      labels:
+        app: prosody
+    spec:
+      volumes:
+      - name: prosody-config
+        persistentVolumeClaim:
+          claimName: prosody-pvc
+      containers:
+      - name: prosody
+        image: jitsi/prosody  
+        volumeMounts:
+        - mountPath: /config
+          name: prosody-config
+        env:
+        - name: AUTH_TYPE
+          value: "$AUTH_TYPE"
+        - name: ENABLE_AUTH
+          value: "$ENABLE_AUTH"
+        - name: ENABLE_GUESTS
+          value: "$ENABLE_GUESTS"
+        - name: GLOBAL_MODULES
+          value: "$GLOBAL_MODULES"
+        - name: GLOBAL_CONFIG
+          value: "$GLOBAL_CONFIG"
+        - name: LDAP_URL
+          value: "$LDAP_URL"
+        - name: LDAP_BASE
+          value: "$LDAP_BASE"
+        - name: LDAP_BINDDN
+          value: "$LDAP_BINDDN"
+        - name: LDAP_BINDPW
+          value: "$LDAP_BINDPW"
+        - name: LDAP_FILTER
+          value: "$LDAP_FILTER"
+        - name: LDAP_AUTH_METHOD
+          value: "$LDAP_AUTH_METHOD"
+        - name: LDAP_VERSION
+          value: "$LDAP_VERSION"
+        - name: LDAP_USE_TLS
+          value: "$LDAP_USE_TLS"
+        - name: LDAP_TLS_CIPHERS
+          value: "$LDAP_TLS_CIPHERS"
+        - name: LDAP_TLS_CHECK_PEER
+          value: "$LDAP_TLS_CHECK_PEER"
+        - name: LDAP_TLS_CACERT_FILE
+          value: "$LDAP_TLS_CACERT_FILE"
+        - name: LDAP_TLS_CACERT_DIR
+          value: "$LDAP_TLS_CACERT_DIR"
+        - name: XMPP_DOMAIN
+          value: "$XMPP_DOMAIN"
+        - name: XMPP_AUTH_DOMAIN
+          value: "$XMPP_AUTH_DOMAIN"
+        - name: XMPP_GUEST_DOMAIN
+          value: "$XMPP_GUEST_DOMAIN"
+        - name: XMPP_MUC_DOMAIN
+          value: "$XMPP_MUC_DOMAIN"
+        - name: XMPP_INTERNAL_MUC_DOMAIN
+          value: "$XMPP_INTERNAL_MUC_DOMAIN"
+        - name: XMPP_MODULES
+          value: "$XMPP_MODULES"
+        - name: XMPP_MUC_MODULES
+          value: "$XMPP_MUC_MODULES"
+        - name: XMPP_INTERNAL_MUC_MODULES
+          value: "$XMPP_INTERNAL_MUC_MODULES"
+        - name: JICOFO_COMPONENT_SECRET
+          value: "$JICOFO_COMPONENT_SECRET"
+        - name: JICOFO_AUTH_USER
+          value: "$JICOFO_AUTH_USER"
+        - name: JICOFO_AUTH_PASSWORD
+          value: "$JICOFO_AUTH_PASSWORD"
+        - name: JVB_AUTH_USER
+          value: "$JVB_AUTH_USER"
+        - name: JVB_AUTH_PASSWORD
+          value: "$JVB_AUTH_PASSWORD"
+        - name: JIGASI_XMPP_USER
+          value: "$JIGASI_XMPP_USER"
+        - name: JIGASI_XMPP_PASSWORD
+          value: "$JIGASI_XMPP_PASSWORD"
+        - name: JWT_APP_ID
+          value: "$JWT_APP_ID"
+        - name: JWT_APP_SECRET
+          value: "$JWT_APP_SECRET"
+        - name: JWT_ACCEPTED_ISSUERS
+          value: "$JWT_ACCEPTED_ISSUERS"
+        - name: JWT_ACCEPTED_AUDIENCES
+          value: "$JWT_ACCEPTED_AUDIENCES"
+        - name: JWT_ASAP_KEYSERVER
+          value: "$JWT_ASAP_KEYSERVER"
+        - name: JWT_ALLOW_EMPTY
+          value: "$JWT_ALLOW_EMPTY"
+        - name: JWT_AUTH_TYPE
+          value: "$JWT_AUTH_TYPE"
+        - name: JWT_TOKEN_AUTH_MODULE
+          value: "$JWT_TOKEN_AUTH_MODULE"
+        - name: LOG_LEVEL
+          value: "$LOG_LEVEL"
+        - name: TZ
+          value: "$TZ"
+        ports:
+        - containerPort: 5222
+#        - containerPort: 5269
+        - containerPort: 5280
+        - containerPort: 5347
+
