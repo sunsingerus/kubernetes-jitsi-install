@@ -1,41 +1,50 @@
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: jvb-tcp
-  labels:
-    app: jvb
-spec:
-  selector:
-    app: jvb
-  ports:
-  - name: "port-4443"
-    port: 4443
-    targetPort: 4443
-  type: LoadBalancer
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: jvb-udp
-  labels:
-    app: jvb
-spec:
-  selector:
-    app: jvb
-  ports:
-  - name: "port-10000"
-    port: 10000
-    protocol: UDP
-    targetPort: 10000
-  type: LoadBalancer
-#---
 #apiVersion: v1
 #kind: Service
 #metadata:
 #  name: jvb-tcp
 #  labels:
 #    app: jvb
+#  annotations:
+#    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+#    service.beta.kubernetes.io/aws-load-balancer-internal: "true"
+#spec:
+#  selector:
+#    app: jvb
+#  ports:
+#  - name: "port-4443"
+#    port: 4443
+#    targetPort: 4443
+#  type: LoadBalancer
+#---
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: jvb-udp
+#  labels:
+#    app: jvb
+#  annotations:
+#    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+#    service.beta.kubernetes.io/aws-load-balancer-internal: "true"
+#spec:
+#  selector:
+#    app: jvb
+#  ports:
+#  - name: "port-10000"
+#    port: 10000
+#    protocol: UDP
+#    targetPort: 10000
+#  type: LoadBalancer
+#---
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: jvb
+#  labels:
+#    app: jvb
+#  annotations:
+#    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+#    service.beta.kubernetes.io/aws-load-balancer-internal: "true"
 #spec:
 #  selector:
 #    app: jvb
@@ -48,6 +57,28 @@ spec:
 #    port: 4443
 #    targetPort: 4443
 #  type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jvb
+  labels:
+    app: jvb
+#  annotations:
+#    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+#    service.beta.kubernetes.io/aws-load-balancer-internal: "true"
+spec:
+  selector:
+    app: jvb
+  ports:
+  - name: "port-10000"
+    port: 10000
+    protocol: UDP
+    targetPort: 10000
+  - name: "port-4443"
+    port: 4443
+    targetPort: 4443
+  type: NodePort
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -80,6 +111,10 @@ spec:
       - name: jvb-config
         persistentVolumeClaim:
           claimName: jvb-pvc
+      hostAliases:
+      - ip: "100.69.9.12"
+        hostnames:
+        - "xmpp.meet.jitsi"
       containers:
       - name: jvb
         image: jitsi/jvb

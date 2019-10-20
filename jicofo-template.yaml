@@ -42,6 +42,17 @@ spec:
       - name: jicofo-config
         persistentVolumeClaim:
           claimName: jicofo-pvc
+      hostAliases:
+      - ip: "$XMPP_SERVER_ADDRESS"
+        hostnames:
+        - "$XMPP_SERVER"
+      initContainers:
+      - name: volume-mount-hack
+        image: busybox
+        command: ["sh", "-c", "chown jicofo:jitsi /config; chmod 777 /config"]
+        volumeMounts:
+        - mountPath: /config
+          name: jicofo-config
       containers:
       - name: jicofo
         image: jitsi/jicofo

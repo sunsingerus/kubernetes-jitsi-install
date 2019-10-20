@@ -5,6 +5,9 @@ metadata:
   name: web
   labels:
     app: web
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+    service.beta.kubernetes.io/aws-load-balancer-internal: "true"
 spec:
   selector:
     app: web
@@ -76,6 +79,10 @@ spec:
       - name: web-transcripts
         persistentVolumeClaim:
           claimName: web-transcripts-pvc
+      hostAliases:
+      - ip: "$XMPP_SERVER_ADDRESS"
+        hostnames:
+        - "$XMPP_SERVER"
       containers:
       - name: web
         image: jitsi/web
