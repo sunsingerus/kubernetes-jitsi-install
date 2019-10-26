@@ -13,9 +13,9 @@ spec:
     - port: 5222
       targetPort: 5222
       name: "port-5222"
-#    - port: 5269
-#      targetPort: 5269
-#      name: "port-5269"
+    - port: 5269
+      targetPort: 5269
+      name: "port-5269"
     - port: 5280
       targetPort: 5280
       name: "port-5280"
@@ -27,7 +27,18 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: prosody-pvc
+  name: prosody-config-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: prosody-plugins-pvc
 spec:
   accessModes:
   - ReadWriteOnce
@@ -54,13 +65,18 @@ spec:
       volumes:
       - name: prosody-config
         persistentVolumeClaim:
-          claimName: prosody-pvc
+          claimName: prosody-config-pvc
+      - name: prosody-plugins
+        persistentVolumeClaim:
+          claimName: prosody-plugins-pvc
       containers:
       - name: prosody
         image: jitsi/prosody  
         volumeMounts:
         - mountPath: /config
           name: prosody-config
+        - mountPath: /prosody-plugins-custom
+          name: prosody-plugins
         env:
         - name: AUTH_TYPE
           value: "$AUTH_TYPE"
@@ -147,8 +163,12 @@ spec:
         - name: TZ
           value: "$TZ"
         ports:
+        # Activated service 'c2s' on 5222
         - containerPort: 5222
-#        - containerPort: 5269
+        # Activated service 's2s' on 5269
+        - containerPort: 5269
+        # Activated service 'http' on 5280
         - containerPort: 5280
+        # Activated service 'component' on 5347
         - containerPort: 5347
 
