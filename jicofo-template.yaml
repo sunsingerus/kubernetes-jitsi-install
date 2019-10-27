@@ -70,20 +70,20 @@ spec:
         envFrom:
           - configMapRef:
               name: jitsi-config
-        readinessProbe:
-          httpGet:
-            path: /about/health
-            port: 8888
-            initialDelaySeconds: 5
-            periodSeconds: 3
-            timeoutSeconds: 60
-        livenessProbe:
-          httpGet:
-            path: /about/health
-            port: 8888
-            initialDelaySeconds: 10
-            periodSeconds: 3        
+#        readinessProbe:
+#          httpGet:
+#            path: /about/health
+#            port: 8888
+#            initialDelaySeconds: 5
+#            periodSeconds: 3
+#            timeoutSeconds: 60
+#        livenessProbe:
+#          httpGet:
+#            path: /about/health
+#            port: 8888
+#            initialDelaySeconds: 10
+#            periodSeconds: 3        
         ports:
         - containerPort: 8888
-      restartpolicy: Always
+      restartPolicy: Always
 

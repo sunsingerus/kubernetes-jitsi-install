@@ -86,20 +86,20 @@ spec:
           name: prosody-plugins
         envFrom:
         - configMapRef:
-          name: jitsi-config
-        readinessProbe:
-          httpGet:
-            path: /http-bind
-            port: 5280
-          initialDelaySeconds: 5
-          periodSeconds: 3
-          timeoutSeconds: 60
-        livenessProbe:
-          httpGet:
-            path: /http-bind
-            port: 5280
-          initialDelaySeconds: 10
-          periodSeconds: 3
+            name: jitsi-config
+#        readinessProbe:
+#          httpGet:
+#            path: /http-bind
+#            port: 5280
+#          initialDelaySeconds: 5
+#          periodSeconds: 3
+#          timeoutSeconds: 60
+#        livenessProbe:
+#          httpGet:
+#            path: /http-bind
+#            port: 5280
+#          initialDelaySeconds: 10
+#          periodSeconds: 3
         ports:
         # Activated service 'c2s' on 5222
         - containerPort: 5222

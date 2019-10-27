@@ -1,4 +1,4 @@
----
+#---
 ###
 ### LoadBalancer TCP-only
 ###
@@ -90,13 +90,17 @@ spec:
     app: jvb
   ports:
   - name: "port-$JVB_PORT"
-    nodePort: $JVB_PORT
-    port: $JVB_PORT
+#    nodePort: $JVB_PORT
+#    port: $JVB_PORT
+    nodePort: 30000
+    port: 30000
     protocol: UDP
     targetPort: $JVB_PORT
   - name: "port-$JVB_TCP_PORT"
-    nodePort: $JVB_TCP_PORT
-    port: $JVB_TCP_PORT
+#    nodePort: $JVB_TCP_PORT
+#    port: $JVB_TCP_PORT
+    nodePort: 30443
+    port: 30443
     protocol: TCP
     targetPort: $JVB_TCP_PORT
   type: NodePort
@@ -148,24 +152,25 @@ spec:
         - mountPath: /config
           name: jvb-config
         envFrom:
-	- configMapRef:
-	    name: jitsi-config
-        readinessProbe:
-          httpGet:
-            path: /about/health
-            port: 8080
-          initialDelaySeconds: 5
-          periodSeconds: 3
-          timeoutSeconds: 60        
-        livenessProbe:
-          httpGet:
-            path: /about/health
-            port: 8080
-          initialDelaySeconds: 10
-          periodSeconds: 3
+          - configMapRef:
+              name: jitsi-config
+#        readinessProbe:
+#          httpGet:
+#            path: /about/health
+#            port: 8080
+#          initialDelaySeconds: 5
+#          periodSeconds: 3
+#          timeoutSeconds: 60        
+#        livenessProbe:
+#          httpGet:
+#            path: /about/health
+#            port: 8080
+#          initialDelaySeconds: 10
+#          periodSeconds: 3
         ports:
         - containerPort: $JVB_PORT
           protocol: UDP
         - containerPort: $JVB_TCP_PORT
+          protocol: TCP
       restartPolicy: Always
 
