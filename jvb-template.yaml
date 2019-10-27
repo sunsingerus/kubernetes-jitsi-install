@@ -1,4 +1,7 @@
 ---
+###
+### LoadBalancer TCP-only
+###
 #apiVersion: v1
 #kind: Service
 #metadata:
@@ -16,7 +19,12 @@
 #    port: $JVB_TCP_PORT
 #    targetPort: $JVB_TCP_PORT
 #  type: LoadBalancer
+
+
 #---
+###
+### LoadBalancer UDP-only
+###
 #apiVersion: v1
 #kind: Service
 #metadata:
@@ -35,7 +43,12 @@
 #    protocol: UDP
 #    targetPort: $JVB_PORT
 #  type: LoadBalancer
+
+
 #---
+###
+### LoadBalancer UDP + TCP
+###
 #apiVersion: v1
 #kind: Service
 #metadata:
@@ -57,7 +70,12 @@
 #    port: $JVB_TCP_PORT
 #    targetPort: $JVB_TCP_PORT
 #  type: LoadBalancer
+
+
 ---
+###
+### NodePort UDP + TCP Service
+###
 apiVersion: v1
 kind: Service
 metadata:
@@ -72,24 +90,31 @@ spec:
     app: jvb
   ports:
   - name: "port-$JVB_PORT"
+    nodePort: $JVB_PORT
     port: $JVB_PORT
     protocol: UDP
     targetPort: $JVB_PORT
   - name: "port-$JVB_TCP_PORT"
+    nodePort: $JVB_TCP_PORT
     port: $JVB_TCP_PORT
+    protocol: TCP
     targetPort: $JVB_TCP_PORT
   type: NodePort
+
+
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: jvb-pvc
+  name: jvb-config-pvc
 spec:
   accessModes:
   - ReadWriteOnce
   resources:
     requests:
       storage: 100Mi
+
+
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -110,7 +135,7 @@ spec:
       volumes:
       - name: jvb-config
         persistentVolumeClaim:
-          claimName: jvb-pvc
+          claimName: jvb-config-pvc
       hostAliases:
       - ip: "$XMPP_SERVER_ADDRESS"
         hostnames:
@@ -118,40 +143,29 @@ spec:
       containers:
       - name: jvb
         image: jitsi/jvb
+        imagePullPolicy: Always
         volumeMounts:
         - mountPath: /config
           name: jvb-config
-        env:
-        - name: DOCKER_HOST_ADDRESS
-          value: "$DOCKER_HOST_ADDRESS"
-        - name: XMPP_AUTH_DOMAIN
-          value: "$XMPP_AUTH_DOMAIN"
-        - name: XMPP_INTERNAL_MUC_DOMAIN
-          value: "$XMPP_INTERNAL_MUC_DOMAIN"
-        - name: XMPP_SERVER
-          value: "$XMPP_SERVER"
-        - name: JVB_AUTH_USER
-          value: "$JVB_AUTH_USER"
-        - name: JVB_AUTH_PASSWORD
-          value: "$JVB_AUTH_PASSWORD"
-        - name: JVB_BREWERY_MUC
-          value: "$JVB_BREWERY_MUC"
-        - name: JVB_PORT
-          value: "$JVB_PORT"
-        - name: JVB_TCP_HARVESTER_DISABLED
-          value: "$JVB_TCP_HARVESTER_DISABLED"
-        - name: JVB_TCP_PORT
-          value: "$JVB_TCP_PORT"
-        - name: JVB_STUN_SERVERS
-          value: "$JVB_STUN_SERVERS"
-        - name: JVB_ENABLE_APIS
-          value: "$JVB_ENABLE_APIS"
-        - name: JICOFO_AUTH_USER
-          value: "$JICOFO_AUTH_USER"
-        - name: TZ
-          value: "$TZ"
+        envFrom:
+	- configMapRef:
+	    name: jitsi-config
+        readinessProbe:
+          httpGet:
+            path: /about/health
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 3
+          timeoutSeconds: 60        
+        livenessProbe:
+          httpGet:
+            path: /about/health
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 3
         ports:
         - containerPort: $JVB_PORT
           protocol: UDP
         - containerPort: $JVB_TCP_PORT
+      restartPolicy: Always
 

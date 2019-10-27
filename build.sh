@@ -1,14 +1,19 @@
 #!/bin/bash
 
-# First to install is prosody
-cat prosody-template.yaml | (set -a; source env.example; set +a; envsubst) > 01.prosody-generated.yaml
+ENV_FILE="env.example"
 
-# Second to install Jicofo
-cat jicofo-template.yaml | (set -a; source env.example; set +a; envsubst) > 02.jicofo-generated.yaml
+# Sequence does matter
+cat jitsi-config-template.yaml | (set -a; source "${ENV_FILE}" set +a; envsubst) > 01.jitsi-config-generated.yaml
 
-# Third to install Jitsi-videobridge
-cat jvb-template.yaml | (set -a; source env.example; set +a; envsubst) > 03.jvb-generated.yaml
+# Prosody
+cat prosody-template.yaml | (set -a; source "${ENV_FILE}"; set +a; envsubst) > 02.prosody-generated.yaml
 
-# Forth to install - web-gui
-cat web-template.yaml | (set -a; source env.example; set +a; envsubst) > 04.web-generated.yaml
+# Jicofo
+cat jicofo-template.yaml | (set -a; source "${ENV_FILE}"; set +a; envsubst) > 03.jicofo-generated.yaml
+
+# Jitsi-videobridge
+cat jvb-template.yaml | (set -a; source "${ENV_FILE}"; set +a; envsubst) > 04.jvb-generated.yaml
+
+# web-gui
+cat web-template.yaml | (set -a; source "${ENV_FILE}"; set +a; envsubst) > 05.web-generated.yaml
 

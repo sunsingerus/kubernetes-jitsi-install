@@ -19,6 +19,8 @@ spec:
     port: 8443
     targetPort: 443
   type: LoadBalancer
+
+
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -30,6 +32,8 @@ spec:
   resources:
     requests:
       storage: 100Mi
+
+
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -41,6 +45,8 @@ spec:
   resources:
     requests:
       storage: 100Mi
+
+
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -52,6 +58,8 @@ spec:
   resources:
     requests:
       storage: 100Mi
+
+
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -86,6 +94,7 @@ spec:
       containers:
       - name: web
         image: jitsi/web
+        imagePullPolicy: Always
         volumeMounts:
         - mountPath: /config
           name: web-config
@@ -93,42 +102,11 @@ spec:
           name: web-letsencrypt
         - mountPath: /usr/share/jitsi-meet/transcripts
           name: web-transcripts
-        env:
-        - name: ENABLE_AUTH
-          value: ""
-        - name: ENABLE_GUESTS
-          value: ""
-        - name: ENABLE_LETSENCRYPT
-          value: ""
-        - name: ENABLE_HTTP_REDIRECT
-          value: ""
-        - name: ENABLE_TRANSCRIPTIONS
-          value: ""
-        - name: DISABLE_HTTPS
-          value: ""
-        - name: JICOFO_AUTH_USER
-          value: "focus"
-        - name: LETSENCRYPT_DOMAIN
-          value: ""
-        - name: LETSENCRYPT_EMAIL
-          value: ""
-        - name: PUBLIC_URL
-          value: ""
-        - name: XMPP_DOMAIN
-          value: "meet.jitsi"
-        - name: XMPP_AUTH_DOMAIN
-          value: "auth.meet.jitsi"
-        - name: XMPP_BOSH_URL_BASE
-          value: "http://xmpp.meet.jitsi:5280"
-        - name: XMPP_GUEST_DOMAIN
-          value: "guest.meet.jitsi"
-        - name: XMPP_MUC_DOMAIN
-          value: "muc.meet.jitsi"
-        - name: ETHERPAD_URL_BASE
-          value: ""
-        - name: TZ
-          value: "Europe/Amsterdam"
+        envFrom:
+        - configMapRef:
+            name: jitsi-config
         ports:
         - containerPort: 80
         - containerPort: 443
+    restartPolicy: Always
 
