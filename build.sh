@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ENV_FILE="env.example"
+ENV_FILE="${ENV_FILE:-env.example}"
 
 # Sequence does matter
 cat jitsi-config-template.yaml | (set -a; source "${ENV_FILE}" set +a; envsubst) > 01.jitsi-config-generated.yaml
