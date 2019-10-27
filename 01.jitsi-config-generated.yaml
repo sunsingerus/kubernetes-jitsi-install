@@ -11,7 +11,7 @@ data:
 #
 
 # Directory where all configuration will be stored.
-  CONFIG: "/home/user/.jitsi-meet-cfg"
+  CONFIG: "~/.jitsi-meet-cfg"
 
 # Exposed HTTP port.
   HTTP_PORT: "8000"
@@ -253,7 +253,7 @@ data:
 # Credentials for connect to Cloud Google API from Jigasi. Path located inside the container.
 # Please read https://cloud.google.com/text-to-speech/docs/quickstart-protocol
 # section "Before you begin" from 1 to 5 paragraph. Copy the key on
-# the docker host to /home/user/.jitsi-meet-cfg/jigasi/key.json and to enable this setting:
+# the docker host to ~/.jitsi-meet-cfg/jigasi/key.json and to enable this setting:
   GOOGLE_APPLICATION_CREDENTIALS: ""
 
 # Disable HTTPS. This can be useful if TLS connections are going to be handled outside of this setup.
