@@ -1,0 +1,26 @@
+---
+###
+### NodePort UDP + TCP Service
+###
+apiVersion: v1
+kind: Service
+metadata:
+  name: jvb
+  labels:
+    app: jvb
+spec:
+  selector:
+    app: jvb
+  ports:
+  - name: "port-30000"
+    protocol: UDP
+    nodePort: 30000
+    port: 30000
+    targetPort: 30000
+  - name: "port-30443"
+    protocol: TCP
+    nodePort: 30443
+    port: 30443
+    targetPort: 30443
+  type: NodePort
+

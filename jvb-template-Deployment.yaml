@@ -72,39 +72,6 @@
 #  type: LoadBalancer
 
 
----
-###
-### NodePort UDP + TCP Service
-###
-apiVersion: v1
-kind: Service
-metadata:
-  name: jvb
-  labels:
-    app: jvb
-#  annotations:
-#    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
-#    service.beta.kubernetes.io/aws-load-balancer-internal: "true"
-spec:
-  selector:
-    app: jvb
-  ports:
-  - name: "port-$JVB_PORT"
-#    nodePort: $JVB_PORT
-#    port: $JVB_PORT
-    nodePort: 30000
-    port: 30000
-    protocol: UDP
-    targetPort: $JVB_PORT
-  - name: "port-$JVB_TCP_PORT"
-#    nodePort: $JVB_TCP_PORT
-#    port: $JVB_TCP_PORT
-    nodePort: 30443
-    port: 30443
-    protocol: TCP
-    targetPort: $JVB_TCP_PORT
-  type: NodePort
-
 
 ---
 apiVersion: v1
@@ -117,8 +84,6 @@ spec:
   resources:
     requests:
       storage: 100Mi
-
-
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -140,10 +105,10 @@ spec:
       - name: jvb-config
         persistentVolumeClaim:
           claimName: jvb-config-pvc
-      hostAliases:
-      - ip: "$XMPP_SERVER_ADDRESS"
-        hostnames:
-        - "$XMPP_SERVER"
+#      hostAliases:
+#      - ip: "$XMPP_SERVER_ADDRESS"
+#        hostnames:
+#        - "$XMPP_SERVER"
       containers:
       - name: jvb
         image: jitsi/jvb

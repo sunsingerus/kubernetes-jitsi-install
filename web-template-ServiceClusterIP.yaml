@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-cip
+  labels:
+    app: web
+spec:
+  selector:
+    app: web
+  ports:
+  - name: "port-$HTTP_PORT"
+    port: $HTTP_PORT
+    targetPort: 80
+  type: ClusterIP
+

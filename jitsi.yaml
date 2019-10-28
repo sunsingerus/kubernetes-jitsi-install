@@ -1,0 +1,854 @@
+#
+# This ConfigMap is produced out of env vars file
+#
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jitsi-config
+data:
+#
+# Basic configuration options
+#
+
+# Directory where all configuration will be stored.
+  CONFIG: "~/.jitsi-meet-cfg"
+
+# Exposed HTTP port.
+  HTTP_PORT: "80"
+
+# Exposed HTTPS port.
+  HTTPS_PORT: "443"
+
+# System time zone.
+  TZ: "Europe/Amsterdam"
+
+# Public URL for the web service.
+  PUBLIC_URL: "https://web.jitsi.sunsingerus.com"
+
+# IP address of the Docker host. See the "Running on a LAN environment" section
+# in the README.
+  DOCKER_HOST_ADDRESS: ""
+
+
+#
+# Let's Encrypt configuration
+#
+
+# Enable Let's Encrypt certificate generation.
+  ENABLE_LETSENCRYPT: ""
+
+# Domain for which to generate the certificate.
+  LETSENCRYPT_DOMAIN: ""
+
+# E-Mail for receiving important account notifications (mandatory).
+  LETSENCRYPT_EMAIL: ""
+
+
+#
+# Etherpad integration (for document sharing)
+#
+
+# Set etherpad-lite URL (uncomment to enable).
+  ETHERPAD_URL_BASE: ""
+
+
+#
+# Basic Jigasi configuration options (needed for SIP gateway support)
+#
+
+# SIP URI for incoming / outgoing calls.
+  JIGASI_SIP_URI: ""
+
+# Password for the specified SIP account as a clear text
+  JIGASI_SIP_PASSWORD: ""
+
+# SIP server (use the SIP account domain if in doubt).
+  JIGASI_SIP_SERVER: ""
+
+# SIP server port
+  JIGASI_SIP_PORT: ""
+
+# SIP server transport
+  JIGASI_SIP_TRANSPORT: ""
+
+#
+# Authentication configuration (see README for details)
+#
+
+# Enable authentication.
+  ENABLE_AUTH: ""
+
+# Enable guest access.
+  ENABLE_GUESTS: ""
+
+# Select authentication type: internal, jwt or ldap
+  AUTH_TYPE: ""
+
+# JWT auuthentication
+#
+
+# Application identifier.
+  JWT_APP_ID: ""
+
+# Application secret known only to your token.
+  JWT_APP_SECRET: ""
+
+# (Optional) Set asap_accepted_issuers as a comma separated list.
+  JWT_ACCEPTED_ISSUERS: ""
+
+# (Optional) Set asap_accepted_audiences as a comma separated list.
+  JWT_ACCEPTED_AUDIENCES: ""
+
+
+# LDAP authentication (for more information see the Cyrus SASL saslauthd.conf man page)
+#
+
+# LDAP url for connection.
+  LDAP_URL: ""
+
+# LDAP base DN. Can be empty
+  LDAP_BASE: ""
+
+# LDAP user DN. Do not specify this parameter for the anonymous bind.
+  LDAP_BINDDN: ""
+
+# LDAP user password. Do not specify this parameter for the anonymous bind.
+  LDAP_BINDPW: ""
+
+# LDAP filter. Tokens example:
+# %1-9 - if the input key is user@mail.domain.com, then %1 is com, %2 is domain and %3 is mail.
+# %s - %s is replaced by the complete service string.
+# %r - %r is replaced by the complete realm string.
+  LDAP_FILTER: ""
+
+# LDAP authentication method
+  LDAP_AUTH_METHOD: ""
+
+# LDAP version
+  LDAP_VERSION: ""
+
+# LDAP TLS using
+  LDAP_USE_TLS: ""
+
+# List of SSL/TLS ciphers to allow.
+  LDAP_TLS_CIPHERS: ""
+
+# Require and verify server certificate
+  LDAP_TLS_CHECK_PEER: ""
+
+# Path to CA cert file. Used when server sertificate verify is enabled.
+  LDAP_TLS_CACERT_FILE: ""
+
+# Path to CA certs directory. Used when server sertificate verify is enabled.
+  LDAP_TLS_CACERT_DIR: ""
+
+
+#
+# Advanced configuration options (you generally don't need to change these)
+#
+
+# Internal XMPP domain.
+  XMPP_DOMAIN: "meet.jitsi"
+
+# Internal XMPP server
+  XMPP_SERVER: "prosody"
+
+  XMPP_SERVER_ADDRESS: ""
+
+# Internal XMPP server URL
+  XMPP_BOSH_URL_BASE: "http://prosody:5280"
+
+# Internal XMPP domain for authenticated services.
+  XMPP_AUTH_DOMAIN: "auth.meet.jitsi"
+
+# XMPP domain for the MUC.
+  XMPP_MUC_DOMAIN: "muc.meet.jitsi"
+
+# XMPP domain for the internal MUC used for jibri, jigasi and jvb pools.
+  XMPP_INTERNAL_MUC_DOMAIN: "internal-muc.meet.jitsi"
+
+# XMPP domain for unauthenticated users.
+  XMPP_GUEST_DOMAIN: "guest.meet.jitsi"
+
+# Custom Prosody modules for XMPP_DOMAIN (comma separated)
+  XMPP_MODULES: ""
+
+# Custom Prosody modules for MUC component (comma separated)
+  XMPP_MUC_MODULES: ""
+
+# Custom Prosody modules for internal MUC component (comma separated)
+  XMPP_INTERNAL_MUC_MODULES: ""
+
+# MUC for the JVB pool.
+  JVB_BREWERY_MUC: "jvbbrewery"
+
+# XMPP user for JVB client connections.
+  JVB_AUTH_USER: "jvb"
+
+# XMPP password for JVB client connections.
+  JVB_AUTH_PASSWORD: "passw0rd"
+
+# STUN servers used to discover the server's public IP.
+  JVB_STUN_SERVERS: "stun.l.google.com:19302,stun1.l.google.com:19302,stun2.l.google.com:19302"
+
+# Media port for the Jitsi Videobridge
+  JVB_PORT: "30000"
+
+# TCP Fallback for Jitsi Videobridge for when UDP isn't available
+  JVB_TCP_HARVESTER_DISABLED: "false"
+  JVB_TCP_PORT: "30443"
+
+# A comma separated list of APIs to enable when the JVB is started. The default is none.
+# See https://github.com/jitsi/jitsi-videobridge/blob/master/doc/rest.md for more information
+  JVB_ENABLE_APIS: ""
+
+# XMPP component password for Jicofo.
+  JICOFO_COMPONENT_SECRET: "s3cr37"
+
+# XMPP user for Jicofo client connections. NOTE: this option doesn't currently work due to a bug.
+  JICOFO_AUTH_USER: "focus"
+
+# XMPP password for Jicofo client connections.
+  JICOFO_AUTH_PASSWORD: "passw0rd"
+
+# XMPP user for Jigasi MUC client connections.
+  JIGASI_XMPP_USER: "jigasi"
+
+# XMPP password for Jigasi MUC client connections.
+  JIGASI_XMPP_PASSWORD: "passw0rd"
+
+# MUC name for the Jigasi pool.
+  JIGASI_BREWERY_MUC: "jigasibrewery"
+
+# Minimum port for media used by Jigasi.
+  JIGASI_PORT_MIN: "20000"
+
+# Maximum port for media used by Jigasi.
+  JIGASI_PORT_MAX: "20050"
+
+# Enable SDES srtp
+  JIGASI_ENABLE_SDES_SRTP: ""
+
+# Keepalive method
+  JIGASI_SIP_KEEP_ALIVE_METHOD: ""
+
+# Health-check extension
+  JIGASI_HEALTH_CHECK_SIP_URI: ""
+
+# Health-check interval
+  JIGASI_HEALTH_CHECK_INTERVAL: ""
+#
+# Enable Jigasi transcription.
+  ENABLE_TRANSCRIPTIONS: ""
+
+# Jigasi will recordord an audio when transcriber is on. Default false.
+  JIGASI_TRANSCRIBER_RECORD_AUDIO: ""
+
+# Jigasi will send transcribed text to the chat when transcriber is on. Default false.
+  JIGASI_TRANSCRIBER_SEND_TXT: ""
+
+# Jigasi post to the chat an url with transcription file. Default false.
+  JIGASI_TRANSCRIBER_ADVERTISE_URL: ""
+
+# Credentials for connect to Cloud Google API from Jigasi. Path located inside the container.
+# Please read https://cloud.google.com/text-to-speech/docs/quickstart-protocol
+# section "Before you begin" from 1 to 5 paragraph. Copy the key on
+# the docker host to ~/.jitsi-meet-cfg/jigasi/key.json and to enable this setting:
+  GOOGLE_APPLICATION_CREDENTIALS: ""
+
+# Disable HTTPS. This can be useful if TLS connections are going to be handled outside of this setup.
+  DISABLE_HTTPS: ""
+
+# Redirects HTTP traffic to HTTPS. Only works with the standard HTTPS port (443).
+  ENABLE_HTTP_REDIRECT: ""
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prosody
+spec:
+  selector:
+    app: prosody
+  ports:
+  - name: "port-5222"
+    port: 5222
+    targetPort: 5222
+  - name: "port-5269"
+    port: 5269
+    targetPort: 5269
+  - name: "port-5280"
+    port: 5280
+    targetPort: 5280
+  - name: "port-5347"
+    port: 5347
+    targetPort: 5347
+  type: ClusterIP
+
+---
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: prosody
+#  annotations:
+#    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+#    service.beta.kubernetes.io/aws-load-balancer-internal: "true"
+#spec:
+#  selector:
+#    app: prosody
+#  ports:
+#    - port: 5222
+#      targetPort: 5222
+#      name: "port-5222"
+#    - port: 5269
+#      targetPort: 5269
+#      name: "port-5269"
+#    - port: 5280
+#      targetPort: 5280
+#      name: "port-5280"
+#    - port: 5347
+#      targetPort: 5347
+#      name: "port-5347"
+#  type: LoadBalancer
+
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: prosody-config-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: prosody-plugins-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prosody
+  labels:
+    app: prosody
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prosody
+  template:
+    metadata:
+      labels:
+        app: prosody
+    spec:
+      volumes:
+      - name: prosody-config
+        persistentVolumeClaim:
+          claimName: prosody-config-pvc
+      - name: prosody-plugins
+        persistentVolumeClaim:
+          claimName: prosody-plugins-pvc
+      containers:
+      - name: prosody
+        image: jitsi/prosody  
+        imagePullPolicy: Always
+        volumeMounts:
+        - mountPath: /config
+          name: prosody-config
+        - mountPath: /prosody-plugins-custom
+          name: prosody-plugins
+        envFrom:
+        - configMapRef:
+            name: jitsi-config
+#        readinessProbe:
+#          httpGet:
+#            path: /http-bind
+#            port: 5280
+#          initialDelaySeconds: 5
+#          periodSeconds: 3
+#          timeoutSeconds: 60
+#        livenessProbe:
+#          httpGet:
+#            path: /http-bind
+#            port: 5280
+#          initialDelaySeconds: 10
+#          periodSeconds: 3
+        ports:
+        # Activated service 'c2s' on 5222
+        - containerPort: 5222
+        # Activated service 's2s' on 5269
+        - containerPort: 5269
+        # Activated service 'http' on 5280
+        - containerPort: 5280
+        # Activated service 'component' on 5347
+        - containerPort: 5347
+      restartPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jicofo
+spec:
+  selector:
+    app: jicofo
+  ports:
+    - port: 8888
+      targetPort: 8888
+      name: "port-8888"
+  type: ClusterIP
+#---
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: jicofo
+#  annotations:
+#    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+#    service.beta.kubernetes.io/aws-load-balancer-internal: "true"
+#spec:
+#  selector:
+#    app: jicofo
+#  ports:
+#    - port: 8888
+#      targetPort: 8888
+#      name: "port-8888"
+#  type: LoadBalancer
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jicofo-config-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jicofo
+  labels:
+    app: jicofo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jicofo
+  template:
+    metadata:
+      labels:
+        app: jicofo
+    spec:
+      volumes:
+      - name: jicofo-config
+        persistentVolumeClaim:
+          claimName: jicofo-config-pvc
+#      hostAliases:
+#      - ip: ""
+#        hostnames:
+#        - "prosody"
+      initContainers:
+      - name: volume-mount-hack
+        image: busybox
+        command: 
+        - "sh"
+        - "-c"
+        - "chown -R 999:1000 /config; chmod -R 777 /config;"
+        # user:group - jicofo:jitsi - 999:1000
+        volumeMounts:
+        - mountPath: /config
+          name: jicofo-config
+      containers:
+      - name: jicofo
+        image: jitsi/jicofo
+        imagePullPolicy: Always
+        volumeMounts:
+        - mountPath: /config
+          name: jicofo-config
+        envFrom:
+          - configMapRef:
+              name: jitsi-config
+#        readinessProbe:
+#          httpGet:
+#            path: /about/health
+#            port: 8888
+#            initialDelaySeconds: 5
+#            periodSeconds: 3
+#            timeoutSeconds: 60
+#        livenessProbe:
+#          httpGet:
+#            path: /about/health
+#            port: 8888
+#            initialDelaySeconds: 10
+#            periodSeconds: 3        
+        ports:
+        - containerPort: 8888
+      restartPolicy: Always
+
+#---
+###
+### LoadBalancer TCP-only
+###
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: jvb-tcp
+#  labels:
+#    app: jvb
+#  annotations:
+#    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+#    service.beta.kubernetes.io/aws-load-balancer-internal: "true"
+#spec:
+#  selector:
+#    app: jvb
+#  ports:
+#  - name: "port-30443"
+#    port: 30443
+#    targetPort: 30443
+#  type: LoadBalancer
+
+
+#---
+###
+### LoadBalancer UDP-only
+###
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: jvb-udp
+#  labels:
+#    app: jvb
+#  annotations:
+#    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+#    service.beta.kubernetes.io/aws-load-balancer-internal: "true"
+#spec:
+#  selector:
+#    app: jvb
+#  ports:
+#  - name: "port-30000"
+#    port: 30000
+#    protocol: UDP
+#    targetPort: 30000
+#  type: LoadBalancer
+
+
+#---
+###
+### LoadBalancer UDP + TCP
+###
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: jvb
+#  labels:
+#    app: jvb
+#  annotations:
+#    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+#    service.beta.kubernetes.io/aws-load-balancer-internal: "true"
+#spec:
+#  selector:
+#    app: jvb
+#  ports:
+#  - name: "port-30000"
+#    port: 30000
+#    protocol: UDP
+#    targetPort: 30000
+#  - name: "port-30443"
+#    port: 30443
+#    targetPort: 30443
+#  type: LoadBalancer
+
+
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jvb-config-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jvb
+  labels:
+    app: jvb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jvb
+  template:
+    metadata:
+      labels:
+        app: jvb
+    spec:
+      volumes:
+      - name: jvb-config
+        persistentVolumeClaim:
+          claimName: jvb-config-pvc
+#      hostAliases:
+#      - ip: ""
+#        hostnames:
+#        - "prosody"
+      containers:
+      - name: jvb
+        image: jitsi/jvb
+        imagePullPolicy: Always
+        volumeMounts:
+        - mountPath: /config
+          name: jvb-config
+        envFrom:
+          - configMapRef:
+              name: jitsi-config
+#        readinessProbe:
+#          httpGet:
+#            path: /about/health
+#            port: 8080
+#          initialDelaySeconds: 5
+#          periodSeconds: 3
+#          timeoutSeconds: 60        
+#        livenessProbe:
+#          httpGet:
+#            path: /about/health
+#            port: 8080
+#          initialDelaySeconds: 10
+#          periodSeconds: 3
+        ports:
+        - containerPort: 30000
+          protocol: UDP
+        - containerPort: 30443
+          protocol: TCP
+      restartPolicy: Always
+
+---
+###
+### NodePort UDP + TCP Service
+###
+apiVersion: v1
+kind: Service
+metadata:
+  name: jvb
+  labels:
+    app: jvb
+spec:
+  selector:
+    app: jvb
+  ports:
+  - name: "port-30000"
+    protocol: UDP
+    nodePort: 30000
+    port: 30000
+    targetPort: 30000
+  - name: "port-30443"
+    protocol: TCP
+    nodePort: 30443
+    port: 30443
+    targetPort: 30443
+  type: NodePort
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: web-config-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: web-letsencrypt-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: web-transcripts-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: web
+  name: web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      volumes:
+      - name: web-config
+        persistentVolumeClaim:
+          claimName: web-config-pvc
+      - name: web-letsencrypt
+        persistentVolumeClaim:
+          claimName: web-letsencrypt-pvc
+      - name: web-transcripts
+        persistentVolumeClaim:
+          claimName: web-transcripts-pvc
+#      hostAliases:
+#      - ip: ""
+#        hostnames:
+#        - "prosody"
+      containers:
+      - name: web
+        image: jitsi/web
+        imagePullPolicy: Always
+        volumeMounts:
+        - mountPath: /config
+          name: web-config
+        - mountPath: /etc/letsencrypt
+          name: web-letsencrypt
+        - mountPath: /usr/share/jitsi-meet/transcripts
+          name: web-transcripts
+        envFrom:
+        - configMapRef:
+            name: jitsi-config
+        ports:
+        - containerPort: 80
+        - containerPort: 443
+      restartPolicy: Always
+
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Issuer
+metadata:
+  name: web-prod
+spec:
+  acme:
+    # The ACME server URL
+    server: https://acme-v02.api.letsencrypt.org/directory
+
+    # Email address used for ACME registration
+    email: sunsingerus@gmail.com
+
+    # Name of a secret used to store the ACME account private key
+    privateKeySecretRef:
+      name: sunsingerus-prod
+
+    # Enable the HTTP-01 challenge provider
+    solvers:
+    - http01:
+        ingress:
+          class: nginx
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: "web"
+  annotations:
+    cert-manager.io/issuer: "web-prod"
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  rules:
+    - host: "web.jitsi.sunsingerus.com"
+      http:
+        paths:
+          - path: "/"
+            backend:
+              serviceName: web-cip
+              servicePort: 80
+  tls:
+    - hosts:
+        - "web.jitsi.sunsingerus.com"
+      secretName: web-tls
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-cip
+  labels:
+    app: web
+spec:
+  selector:
+    app: web
+  ports:
+  - name: "port-80"
+    port: 80
+    targetPort: 80
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-nodeport
+  labels:
+    app: web
+spec:
+  selector:
+    app: web
+  ports:
+  - name: "port-80"
+    protocol: TCP
+    nodePort: 30080
+    port: 30080
+    targetPort: 80
+  type: NodePort
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-nlb
+  labels:
+    app: web
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+    service.beta.kubernetes.io/aws-load-balancer-internal: "true"
+spec:
+  selector:
+    app: web
+  ports:
+  - name: "port-80"
+    port: 80
+    targetPort: 80
+  - name: "port-443"
+    port: 443
+    targetPort: 443
+  type: LoadBalancer
+

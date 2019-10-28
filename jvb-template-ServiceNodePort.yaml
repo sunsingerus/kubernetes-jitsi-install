@@ -1,0 +1,26 @@
+---
+###
+### NodePort UDP + TCP Service
+###
+apiVersion: v1
+kind: Service
+metadata:
+  name: jvb
+  labels:
+    app: jvb
+spec:
+  selector:
+    app: jvb
+  ports:
+  - name: "port-$JVB_PORT"
+    protocol: UDP
+    nodePort: $JVB_PORT
+    port: $JVB_PORT
+    targetPort: $JVB_PORT
+  - name: "port-$JVB_TCP_PORT"
+    protocol: TCP
+    nodePort: $JVB_TCP_PORT
+    port: $JVB_TCP_PORT
+    targetPort: $JVB_TCP_PORT
+  type: NodePort
+

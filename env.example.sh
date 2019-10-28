@@ -6,16 +6,16 @@
 CONFIG=\~/.jitsi-meet-cfg
 
 # Exposed HTTP port.
-HTTP_PORT=8000
+HTTP_PORT=80
 
 # Exposed HTTPS port.
-HTTPS_PORT=8443
+HTTPS_PORT=443
 
 # System time zone.
 TZ=Europe/Amsterdam
 
 # Public URL for the web service.
-#PUBLIC_URL="https://meet.example.com"
+PUBLIC_URL="https://web.jitsi.sunsingerus.com"
 
 # IP address of the Docker host. See the "Running on a LAN environment" section
 # in the README.
@@ -143,12 +143,12 @@ TZ=Europe/Amsterdam
 XMPP_DOMAIN=meet.jitsi
 
 # Internal XMPP server
-XMPP_SERVER=xmpp.meet.jitsi
+XMPP_SERVER=prosody
 
-XMPP_SERVER_ADDRESS=100.69.9.12
+#XMPP_SERVER_ADDRESS=100.69.9.12
 
 # Internal XMPP server URL
-XMPP_BOSH_URL_BASE=http://xmpp.meet.jitsi:5280
+XMPP_BOSH_URL_BASE=http://prosody:5280
 
 # Internal XMPP domain for authenticated services.
 XMPP_AUTH_DOMAIN=auth.meet.jitsi
@@ -184,11 +184,11 @@ JVB_AUTH_PASSWORD=passw0rd
 JVB_STUN_SERVERS=stun.l.google.com:19302,stun1.l.google.com:19302,stun2.l.google.com:19302
 
 # Media port for the Jitsi Videobridge
-JVB_PORT=10000
+JVB_PORT=30000
 
 # TCP Fallback for Jitsi Videobridge for when UDP isn't available
-JVB_TCP_HARVESTER_DISABLED=true
-JVB_TCP_PORT=4443
+JVB_TCP_HARVESTER_DISABLED=false
+JVB_TCP_PORT=30443
 
 # A comma separated list of APIs to enable when the JVB is started. The default is none.
 # See https://github.com/jitsi/jitsi-videobridge/blob/master/doc/rest.md for more information

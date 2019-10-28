@@ -3,9 +3,6 @@ apiVersion: v1
 kind: Service
 metadata:
   name: jicofo
-  annotations:
-    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
-    service.beta.kubernetes.io/aws-load-balancer-internal: "true"
 spec:
   selector:
     app: jicofo
@@ -13,7 +10,23 @@ spec:
     - port: 8888
       targetPort: 8888
       name: "port-8888"
-  type: LoadBalancer
+  type: ClusterIP
+#---
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: jicofo
+#  annotations:
+#    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+#    service.beta.kubernetes.io/aws-load-balancer-internal: "true"
+#spec:
+#  selector:
+#    app: jicofo
+#  ports:
+#    - port: 8888
+#      targetPort: 8888
+#      name: "port-8888"
+#  type: LoadBalancer
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -46,10 +59,10 @@ spec:
       - name: jicofo-config
         persistentVolumeClaim:
           claimName: jicofo-config-pvc
-      hostAliases:
-      - ip: "$XMPP_SERVER_ADDRESS"
-        hostnames:
-        - "$XMPP_SERVER"
+#      hostAliases:
+#      - ip: "$XMPP_SERVER_ADDRESS"
+#        hostnames:
+#        - "$XMPP_SERVER"
       initContainers:
       - name: volume-mount-hack
         image: busybox
@@ -57,6 +70,7 @@ spec:
         - "sh"
         - "-c"
         - "chown -R 999:1000 /config; chmod -R 777 /config;"
+        # user:group - jicofo:jitsi - 999:1000
         volumeMounts:
         - mountPath: /config
           name: jicofo-config
