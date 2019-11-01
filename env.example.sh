@@ -181,7 +181,8 @@ JVB_AUTH_USER=jvb
 JVB_AUTH_PASSWORD=passw0rd
 
 # STUN servers used to discover the server's public IP.
-JVB_STUN_SERVERS=stun.l.google.com:19302,stun1.l.google.com:19302,stun2.l.google.com:19302
+#JVB_STUN_SERVERS=stun.l.google.com:19302,stun1.l.google.com:19302,stun2.l.google.com:19302
+JVB_STUN_SERVERS=coturn.sunsingerus.com:30500
 
 # Media port for the Jitsi Videobridge
 JVB_PORT=30000
