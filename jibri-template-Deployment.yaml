@@ -34,16 +34,18 @@ spec:
 #      - ip: "$XMPP_SERVER_ADDRESS"
 #        hostnames:
 #        - "$XMPP_SERVER"
+      nodeSelector:
+        sound: alsa
       containers:
       - name: jibri
-        image: jitsi/jibri
+        image: sunsingerus/jibri
         imagePullPolicy: Always
         volumeMounts:
         - mountPath: /j-config
-          name: jvb-config
+          name: jibri-config
         envFrom:
           - configMapRef:
-              name: jibri-config
+              name: jitsi-config
 #        readinessProbe:
 #          httpGet:
 #            path: /about/health
