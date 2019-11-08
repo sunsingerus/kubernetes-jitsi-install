@@ -1,0 +1,66 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jibri-config-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jibri
+  labels:
+    app: jibri
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jvb
+  template:
+    metadata:
+      labels:
+        app: jvb
+    spec:
+      volumes:
+      - name: jvb-config
+        persistentVolumeClaim:
+          claimName: jvb-config-pvc
+#      hostAliases:
+#      - ip: "$XMPP_SERVER_ADDRESS"
+#        hostnames:
+#        - "$XMPP_SERVER"
+      containers:
+      - name: jvb
+        image: jitsi/jvb
+        imagePullPolicy: Always
+        volumeMounts:
+        - mountPath: /config
+          name: jvb-config
+        envFrom:
+          - configMapRef:
+              name: jitsi-config
+#        readinessProbe:
+#          httpGet:
+#            path: /about/health
+#            port: 8080
+#          initialDelaySeconds: 5
+#          periodSeconds: 3
+#          timeoutSeconds: 60        
+#        livenessProbe:
+#          httpGet:
+#            path: /about/health
+#            port: 8080
+#          initialDelaySeconds: 10
+#          periodSeconds: 3
+        ports:
+        - containerPort: $JVB_PORT
+          protocol: UDP
+        - containerPort: $JVB_TCP_PORT
+          protocol: TCP
+      restartPolicy: Always
+
