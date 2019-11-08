@@ -20,30 +20,30 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: jvb
+      app: jibri
   template:
     metadata:
       labels:
-        app: jvb
+        app: jibri
     spec:
       volumes:
-      - name: jvb-config
+      - name: jibri-config
         persistentVolumeClaim:
-          claimName: jvb-config-pvc
+          claimName: jibri-config-pvc
 #      hostAliases:
 #      - ip: "$XMPP_SERVER_ADDRESS"
 #        hostnames:
 #        - "$XMPP_SERVER"
       containers:
-      - name: jvb
-        image: jitsi/jvb
+      - name: jibri
+        image: jitsi/jibri
         imagePullPolicy: Always
         volumeMounts:
-        - mountPath: /config
+        - mountPath: /j-config
           name: jvb-config
         envFrom:
           - configMapRef:
-              name: jitsi-config
+              name: jibri-config
 #        readinessProbe:
 #          httpGet:
 #            path: /about/health
