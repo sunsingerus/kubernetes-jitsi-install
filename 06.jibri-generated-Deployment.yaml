@@ -1,0 +1,66 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jibri-config-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jibri
+  labels:
+    app: jibri
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jibri
+  template:
+    metadata:
+      labels:
+        app: jibri
+    spec:
+      volumes:
+      - name: jibri-config
+        persistentVolumeClaim:
+          claimName: jibri-config-pvc
+#      hostAliases:
+#      - ip: ""
+#        hostnames:
+#        - "prosody"
+      containers:
+      - name: jibri
+        image: jitsi/jibri
+        imagePullPolicy: Always
+        volumeMounts:
+        - mountPath: /j-config
+          name: jvb-config
+        envFrom:
+          - configMapRef:
+              name: jibri-config
+#        readinessProbe:
+#          httpGet:
+#            path: /about/health
+#            port: 8080
+#          initialDelaySeconds: 5
+#          periodSeconds: 3
+#          timeoutSeconds: 60        
+#        livenessProbe:
+#          httpGet:
+#            path: /about/health
+#            port: 8080
+#          initialDelaySeconds: 10
+#          periodSeconds: 3
+        ports:
+        - containerPort: 30000
+          protocol: UDP
+        - containerPort: 30443
+          protocol: TCP
+      restartPolicy: Always
+

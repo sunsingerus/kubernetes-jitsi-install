@@ -23,6 +23,9 @@ cat web-template-ServiceClusterIP.yaml | (set -a; source "${ENV_FILE}"; set +a; 
 cat web-template-ServiceNodePort.yaml  | (set -a; source "${ENV_FILE}"; set +a; envsubst) > 05.web-generated-ServiceNodePort.yaml
 cat web-template-ServiceNLB.yaml       | (set -a; source "${ENV_FILE}"; set +a; envsubst) > 05.web-generated-ServiceNLB.yaml
 
+# Jibri
+cat jibri-template-Deployment.yaml       | (set -a; source "${ENV_FILE}"; set +a; envsubst) > 06.jibri-generated-Deployment.yaml
+
 # Accumulate everything into one YAML file
 cat \
 	01.jitsi-config-generated.yaml \
