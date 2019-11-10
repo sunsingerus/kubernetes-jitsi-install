@@ -111,7 +111,7 @@ spec:
 #        - "prosody"
       containers:
       - name: jvb
-        image: jitsi/jvb
+        image: "sunsingerus/jvb"
         imagePullPolicy: Always
         volumeMounts:
         - mountPath: /config

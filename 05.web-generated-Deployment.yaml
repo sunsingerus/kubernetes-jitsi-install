@@ -64,7 +64,7 @@ spec:
 #        - "prosody"
       containers:
       - name: web
-        image: jitsi/web
+        image: "sunsingerus/web"
         imagePullPolicy: Always
         volumeMounts:
         - mountPath: /config

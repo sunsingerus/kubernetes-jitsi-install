@@ -76,7 +76,7 @@ spec:
           name: jicofo-config
       containers:
       - name: jicofo
-        image: jitsi/jicofo
+        image: "sunsingerus/jicofo"
         imagePullPolicy: Always
         volumeMounts:
         - mountPath: /config

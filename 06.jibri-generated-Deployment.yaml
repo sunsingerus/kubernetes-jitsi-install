@@ -41,7 +41,7 @@ spec:
         sound: alsa
       containers:
       - name: jibri
-        image: sunsingerus/jibri
+        image: "sunsingerus/jibri"
         imagePullPolicy: Always
         securityContext:
           privileged: true
@@ -70,9 +70,7 @@ spec:
 #          initialDelaySeconds: 10
 #          periodSeconds: 3
         ports:
-        - containerPort: 30000
-          protocol: UDP
-        - containerPort: 30443
-          protocol: TCP
+        - containerPort: 2222
+        - containerPort: 3333
       restartPolicy: Always
 

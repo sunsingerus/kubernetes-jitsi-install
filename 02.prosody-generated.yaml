@@ -100,7 +100,7 @@ spec:
           claimName: prosody-plugins-pvc
       containers:
       - name: prosody
-        image: jitsi/prosody  
+        image: "sunsingerus/prosody"
         imagePullPolicy: Always
         volumeMounts:
         - mountPath: /config

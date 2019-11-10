@@ -41,7 +41,7 @@ spec:
         sound: alsa
       containers:
       - name: jibri
-        image: sunsingerus/jibri
+        image: "${JITSI_REPO}/jibri"
         imagePullPolicy: Always
         securityContext:
           privileged: true
@@ -70,9 +70,7 @@ spec:
 #          initialDelaySeconds: 10
 #          periodSeconds: 3
         ports:
-        - containerPort: $JVB_PORT
-          protocol: UDP
-        - containerPort: $JVB_TCP_PORT
-          protocol: TCP
+        - containerPort: 2222
+        - containerPort: 3333
       restartPolicy: Always
 

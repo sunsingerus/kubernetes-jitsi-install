@@ -111,7 +111,7 @@ spec:
 #        - "$XMPP_SERVER"
       containers:
       - name: jvb
-        image: jitsi/jvb
+        image: "${JITSI_REPO}/jvb"
         imagePullPolicy: Always
         volumeMounts:
         - mountPath: /config

@@ -1,3 +1,5 @@
+JITSI_REPO=sunsingerus
+
 #
 # Basic configuration options
 #
@@ -72,6 +74,9 @@ PUBLIC_URL="https://web.jitsi.sunsingerus.com"
 
 # Enable guest access.
 #ENABLE_GUESTS=1
+
+# Start a conference with video muted
+#START_WITH_VIDEO_MUTED=1
 
 # Select authentication type: internal, jwt or ldap
 #AUTH_TYPE=internal
@@ -243,6 +248,55 @@ JIGASI_PORT_MAX=20050
 # Jigasi post to the chat an url with transcription file. Default false.
 #JIGASI_TRANSCRIBER_ADVERTISE_URL=true
 
+# Enable recording
+#ENABLE_RECORDING=1
+
+# XMPP domain for the jibri recorder
+XMPP_RECORDER_DOMAIN=recorder.meet.jitsi
+
+# XMPP recorder user for Jibri client connections.
+JIBRI_RECORDER_USER=recorder
+
+# XMPP recorder password for Jibri client connections.
+JIBRI_RECORDER_PASSWORD=passw0rd
+
+# Directory for recordings inside Jibri container.
+JIBRI_RECORDING_DIR=/config/recordings
+
+# The finalizing script. Will run after recording is complete.
+#JIBRI_FINALIZE_RECORDING_SCRIPT_PATH=/config/finalize.sh
+
+# Enable upload recordings to dropbox
+#JIBRI_DROPBOX_APIKEY=3v5iyto7n7az02w
+
+# XMPP user for Jibri client connections.
+JIBRI_XMPP_USER=jibri
+
+# XMPP password for Jibri client connections.
+JIBRI_XMPP_PASSWORD=passw0rd
+
+# MUC name for the Jibri pool.
+JIBRI_BREWERY_MUC=jibribrewery
+
+# MUC connection timeout
+JIBRI_PENDING_TIMEOUT=90
+
+# When jibri gets a request to start a service for a room, the room
+# jid will look like: roomName@optional.prefixes.subdomain.xmpp_domain
+# We'll build the url for the call by transforming that into:
+# https://xmpp_domain/subdomain/roomName
+# So if there are any prefixes in the jid (like jitsi meet, which
+# has its participants join a muc at conference.xmpp_domain) then
+# list that prefix here so it can be stripped out to generate
+# the call url correctly.
+JIBRI_STRIP_DOMAIN_JID=muc
+
+# Directory for logs inside Jibri container.
+JIBRI_LOGS_DIR=/config/logs
+
+# set only if the jibri hosted on a different host
+#JIBRI_EXTERNAL_INSTANCE=1
+
 # Credentials for connect to Cloud Google API from Jigasi. Path located inside the container.
 # Please read https://cloud.google.com/text-to-speech/docs/quickstart-protocol
 # section "Before you begin" from 1 to 5 paragraph. Copy the key on
@@ -254,3 +308,4 @@ JIGASI_PORT_MAX=20050
 
 # Redirects HTTP traffic to HTTPS. Only works with the standard HTTPS port (443).
 #ENABLE_HTTP_REDIRECT=1
+

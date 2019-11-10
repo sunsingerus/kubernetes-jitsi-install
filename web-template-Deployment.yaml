@@ -64,7 +64,7 @@ spec:
 #        - "$XMPP_SERVER"
       containers:
       - name: web
-        image: jitsi/web
+        image: "${JITSI_REPO}/web"
         imagePullPolicy: Always
         volumeMounts:
         - mountPath: /config
