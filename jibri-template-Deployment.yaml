@@ -30,12 +30,17 @@ spec:
       - name: jibri-config
         persistentVolumeClaim:
           claimName: jibri-config-pvc
+      - name: dev-snd
+        hostPath:
+          path: /dev/snd
 #      hostAliases:
 #      - ip: "$XMPP_SERVER_ADDRESS"
 #        hostnames:
 #        - "$XMPP_SERVER"
       nodeSelector:
         sound: alsa
+      securityContext:
+        privileged: true
       containers:
       - name: jibri
         image: sunsingerus/jibri
@@ -43,6 +48,11 @@ spec:
         volumeMounts:
         - mountPath: /j-config
           name: jibri-config
+        - mountPath: /dev/snd
+          name: dev-snd
+        env:
+          - name: DISPLAY
+            value: ":0"
         envFrom:
           - configMapRef:
               name: jitsi-config

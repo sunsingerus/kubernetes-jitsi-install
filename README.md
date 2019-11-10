@@ -10,4 +10,7 @@ sudo sh -c 'echo "options snd-aloop enable=1,1,1,1,1 index=0,1,2,3,4" > /etc/mod
 sudo sh -c 'echo "snd-aloop" >> /etc/modules'
 sudo modprobe snd-aloop
 sudo lsmod | grep snd_aloop
+
+
+kubectl label nodes ip-172-20-62-72.ec2.internal sound=alsa
 ```
