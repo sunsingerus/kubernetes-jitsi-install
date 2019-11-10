@@ -30,6 +30,9 @@ spec:
       - name: jibri-config
         persistentVolumeClaim:
           claimName: jibri-config-pvc
+      - name: dev-snd
+        hostPath:
+          path: /dev/snd
 #      hostAliases:
 #      - ip: ""
 #        hostnames:
@@ -40,9 +43,16 @@ spec:
       - name: jibri
         image: sunsingerus/jibri
         imagePullPolicy: Always
+        securityContext:
+          privileged: true
         volumeMounts:
         - mountPath: /j-config
           name: jibri-config
+        - mountPath: /dev/snd
+          name: dev-snd
+        env:
+          - name: DISPLAY
+            value: ":0"
         envFrom:
           - configMapRef:
               name: jitsi-config

@@ -39,12 +39,12 @@ spec:
 #        - "$XMPP_SERVER"
       nodeSelector:
         sound: alsa
-      securityContext:
-        privileged: true
       containers:
       - name: jibri
         image: sunsingerus/jibri
         imagePullPolicy: Always
+        securityContext:
+          privileged: true
         volumeMounts:
         - mountPath: /j-config
           name: jibri-config
