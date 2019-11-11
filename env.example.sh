@@ -249,7 +249,7 @@ JIGASI_PORT_MAX=20050
 #JIGASI_TRANSCRIBER_ADVERTISE_URL=true
 
 # Enable recording
-#ENABLE_RECORDING=1
+ENABLE_RECORDING=1
 
 # XMPP domain for the jibri recorder
 XMPP_RECORDER_DOMAIN=recorder.meet.jitsi
@@ -295,7 +295,7 @@ JIBRI_STRIP_DOMAIN_JID=muc
 JIBRI_LOGS_DIR=/config/logs
 
 # set only if the jibri hosted on a different host
-#JIBRI_EXTERNAL_INSTANCE=1
+JIBRI_EXTERNAL_INSTANCE=1
 
 # Credentials for connect to Cloud Google API from Jigasi. Path located inside the container.
 # Please read https://cloud.google.com/text-to-speech/docs/quickstart-protocol
