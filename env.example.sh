@@ -145,7 +145,8 @@ PUBLIC_URL="https://web.jitsi.sunsingerus.com"
 #
 
 # Internal XMPP domain.
-XMPP_DOMAIN=meet.jitsi
+#XMPP_DOMAIN=meet.jitsi
+XMPP_DOMAIN=web.jitsi.sunsingerus.com
 
 # Internal XMPP server
 XMPP_SERVER=prosody
@@ -156,16 +157,20 @@ XMPP_SERVER=prosody
 XMPP_BOSH_URL_BASE=http://prosody:5280
 
 # Internal XMPP domain for authenticated services.
-XMPP_AUTH_DOMAIN=auth.meet.jitsi
+#XMPP_AUTH_DOMAIN=auth.meet.jitsi
+XMPP_AUTH_DOMAIN=auth.web.jitsi.sunsingerus.com
 
 # XMPP domain for the MUC.
-XMPP_MUC_DOMAIN=muc.meet.jitsi
+#XMPP_MUC_DOMAIN=muc.meet.jitsi
+XMPP_MUC_DOMAIN=muc.web.jitsi.sunsingerus.com
 
 # XMPP domain for the internal MUC used for jibri, jigasi and jvb pools.
-XMPP_INTERNAL_MUC_DOMAIN=internal-muc.meet.jitsi
+#XMPP_INTERNAL_MUC_DOMAIN=internal-muc.meet.jitsi
+XMPP_INTERNAL_MUC_DOMAIN=internal-muc.web.jitsi.sunsingerus.com
 
 # XMPP domain for unauthenticated users.
-XMPP_GUEST_DOMAIN=guest.meet.jitsi
+#XMPP_GUEST_DOMAIN=guest.meet.jitsi
+XMPP_GUEST_DOMAIN=guest.web.jitsi.sunsingerus.com
 
 # Custom Prosody modules for XMPP_DOMAIN (comma separated)
 XMPP_MODULES=
@@ -252,7 +257,8 @@ JIGASI_PORT_MAX=20050
 ENABLE_RECORDING=1
 
 # XMPP domain for the jibri recorder
-XMPP_RECORDER_DOMAIN=recorder.meet.jitsi
+#XMPP_RECORDER_DOMAIN=recorder.meet.jitsi
+XMPP_RECORDER_DOMAIN=recorder.web.jitsi.sunsingerus.com
 
 # XMPP recorder user for Jibri client connections.
 JIBRI_RECORDER_USER=recorder

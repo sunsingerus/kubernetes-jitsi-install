@@ -43,5 +43,8 @@ cat \
 	05.web-generated-ServiceClusterIP.yaml \
 	05.web-generated-ServiceNodePort.yaml \
 	05.web-generated-ServiceNLB.yaml \
+\
+	06.jibri-generated-Deployment.yaml \
+	06.jibri-generated-ServiceClusterIP.yaml \
 > jitsi.yaml
 
